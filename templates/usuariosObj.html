@@ -1,0 +1,187 @@
+{% extends "baseApp.html" %}
+{% block additional_js %}
+<script src="/static/js/listarUsuarios.js" defer></script>
+{% endblock %}
+
+{% block main_app %}
+<div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog"
+	id="modalSignin">
+	<div class="container modal-content rounded-4 shadow">
+		<div class="text-center fs-3 my-4">Listado de Usuarios</div>
+		<a class="nav-link active ms-auto m-4 fs-5" href='#' data-bs-toggle='modal' data-bs-target='#agregarOra'
+			id='" + ora.getId() + "' name='" + ora.getName() + "' lastname='" + ora.getLastname() + "'
+			email='" + ora.getEmail() + "' tel='" + ora.getTel() + "' tema='" + ora.getTema() + "'
+			descripcion='" + ora.getDescripcion() + "' hora='" + ora.getHora() + "' Sala='" + ora.getSala() + "'>Agregar Usuario</a>
+		<div>
+			<!-- error -->
+		</div>
+		
+		<div>
+			<table class="table table-striped text-center">
+					<thead class="table-dark">
+							<tr>
+									<th scope="col">#ID</th>
+									<th scope="col">Nombre</th>
+									<th scope="col">Apellido</th>
+									<th scope="col">Password</th>
+									<th scope="col">Email</th>
+									<th scope="col">Teléfono</th>
+							</tr>
+					</thead>
+					<tbody id="tabla"></tbody>
+			</table>
+	</div>
+
+	</div>
+</div>
+
+<div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Usuario</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form action="../controller/delUsuarioObj.jsp" method="post">
+				<div class="modal-body text-center">
+					<div class="mb-3">
+						<label for="recipient-name" class="col-form-label">Esta a punto de eliminar al usuario:<label>
+								<div id="dataUser" class="text-danger"></div>
+								<input type="hidden" id="idUser" name="idUser">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<input type="submit" class="btn btn-primary" value="Eliminar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- -------------------------------------------------------------------------------------------- -->
+
+
+<!-- Modal Modificar Usuario-->
+<div class="modal fade" id="modificarUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modificar Usuario</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="" data-bitwarden-watching="1" action="ACA DEBE IR LO QUE QUIERO HACER" method="post">
+	          
+	          <div class="form-floating mb-3">
+
+							<input type="hidden" name="id" value="<%= id %>">
+								<div class="form-floating mb-3">
+								  <input type="text" name="name" class="form-control rounded-3" id="name" placeholder="Nombre" value="<%= name %>" required>
+								  <label for="name">Nombre</label>
+								</div>
+
+								<!-- En tu HTML -->
+								<div id="app-6">
+									<p>{{ usuarionombre }}</p>
+									<input v-model="usuarionombre.nombre">
+								</div>
+
+
+
+
+							<!-- Veu -->
+	            <div id="appmod"></div>
+							<div>ESTOY EN EL HTML</div>
+
+
+
+
+
+
+						</div>
+	          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Enviar Cambios</button>
+	          <small class="text-body-secondary">Al hacer clic en "Agregar", acepta los términos de uso.</small>
+	                  
+	        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- inicio area de prueba -->
+
+
+<!-- fin area de prueba -->
+
+
+
+
+
+
+
+
+<!-- Modal Agregar Orador-->
+<div class="modal fade" id="agregarOra" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar Orador</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="" data-bitwarden-watching="1" action="../controller/addOradorObjAdm.jsp" method="post">
+	          
+	          <div class="form-floating mb-3">
+	            <input type="hidden" name="id" value="<%= id %>">
+								<div class="form-floating mb-3">
+								  <input type="text" name="name" class="form-control rounded-3" id="name" placeholder="Nombre" value="<%= name %>" required>
+								  <label for="name">Nombre</label>
+								</div>
+								<div class="form-floating mb-3">
+								  <input type="text" name="lastname" class="form-control rounded-3" id="lastname" placeholder="Apellido" value="<%= lastname %>" required>
+								  <label for="lastname">Apellido</label>
+								</div>
+								<div class="form-floating mb-3">
+								  <input type="text" name="email" class="form-control rounded-3" id="email" placeholder="Email" value="<%= email %>" required>
+								  <label for="email">Email</label>
+								</div>
+								<div class="form-floating mb-3">
+								  <input type="text" name="tel" class="form-control rounded-3" id="tel" placeholder="Teléfono movil" value="<%= tel %>" required>
+								  <label for="tel">Teléfono móvil</label>
+								</div>
+								<div class="form-floating mb-3">
+								  <input type="text" name="tema" class="form-control rounded-3" id="tema" placeholder="Tema" value="<%= tema %>" required>
+								  <label for="tema">Tema</label>
+								</div>
+								<div class="form-floating mb-3">
+								  <textarea name="descripcion" class="form-control rounded-3" id="descripcion" placeholder="Descripción" required><%= descripcion %></textarea>
+								  <label for="descripcion">Descripción</label>
+								</div>
+								<div class="form-floating mb-3">
+								  <input type="text" name="hora" class="form-control rounded-3" id="hora" placeholder="Hora" value="<%= hora %>" required>
+								  <label for="hora">Hora</label>
+								</div>
+								<div class="form-floating mb-3">
+								  <input type="text" name="sala" class="form-control rounded-3" id="sala" placeholder="Sala" value="<%= sala %>" required>
+								  <label for="sala">Sala</label>
+								</div>
+							</div>
+	          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Agregar Orador</button>
+	          <small class="text-body-secondary">Al hacer clic en "Agregar", acepta los términos de uso.</small>
+	                  
+	        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -20,13 +20,13 @@ function validarUserEmail(type, btn, mens) {
   } else if (type == "email") {
     userEmail = document.getElementById("email").value;
     if (!userEmail.includes("@")) {
-      document.getElementById("mensajeCita").innerHTML = "El email debe contener un @";
-      document.getElementById("mensajeCita").className = "mensaje-login";
+      document.getElementById("mensajeAlerta").innerHTML = "El email debe contener un @";
+      document.getElementById("mensajeAlerta").className = "mensaje-login";
       document.getElementById("form-btn").disabled = "disabled";
       document.getElementById("form-btn").className = "btn-disabled";
     } else {
-      document.getElementById("mensajeCita").innerHTML = "";
-      document.getElementById("mensajeCita").className = "";
+      document.getElementById("mensajeAlerta").innerHTML = "";
+      document.getElementById("mensajeAlerta").className = "";
       document.getElementById("form-btn").disabled = "";
       document.getElementById("form-btn").className = "form-btn-submit";
     }
@@ -170,3 +170,10 @@ const sendCv = () => {
 };
   
 // Fin de envio de cv
+
+
+// Obtén el elemento por su ID
+let conexionHtml = document.getElementById("conexionJs");
+
+// Asigna el contenido utilizando innerHTML
+conexionHtml.innerHTML = 'Estamos conectados';

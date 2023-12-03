@@ -49,9 +49,12 @@ fetch(URL + 'usuarios')
   }
 
 // Función para cargar datos de usuario a eliminar
+let userDelId;
 function cargarDataUser(usuario) {
     let dataUsuario = document.getElementById('dataUser')
     dataUsuario.innerHTML = " " + usuario.nombre + " " + usuario.apellido;
+    userDelId = usuario.id;
+    return userDelId;
 }
 
 // // Función para cargar datos en el modal
@@ -67,4 +70,116 @@ function cargarDataUser(usuario) {
 //     });
 //   }
   
-  
+
+
+
+document.getElementById('agregarUsuarioForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  // Obtener datos del formulario
+  const formData = new FormData(this);
+  console.log(formData);
+
+  // Enviar solicitud POST al servidor
+  fetch('http://127.0.0.1:5000/usuarios', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(Object.fromEntries(formData)),
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Manejar la respuesta del servidor
+    console.log(data);
+
+    // Verificar si el usuario ya existe
+    if (data.mensaje === 'Usuario agregado') {
+      // Limpiar los campos del formulario
+      document.getElementById('agregarUsuarioForm').reset();
+
+      // Mostrar el mensaje de confirmación
+      const mensajeConfirmacion = document.getElementById('mensajeConfirmacion');
+      mensajeConfirmacion.innerHTML = '¡Usuario agregado con éxito!';
+      mensajeConfirmacion.style.display = 'block';
+
+      // Recargar la página después de 3 segundos (ajusta el tiempo según sea necesario)
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    } else if (data.mensaje === 'Usuario existente') {
+      // Mostrar el mensaje de usuario existente sin recargar la página ni limpiar el formulario
+      const mensajeConfirmacion = document.getElementById('mensajeConfirmacion');
+      mensajeConfirmacion.innerHTML = '¡El usuario ya existe!';
+      mensajeConfirmacion.style.display = 'block';
+    }
+  })
+  .catch(error => console.error('Error:', error));
+});
+
+// Obtén la referencia al modal
+const myModal = new bootstrap.Modal(document.getElementById('agregarUsuario'));
+
+// Añade un evento para que se ejecute cuando el modal se cierre
+myModal._element.addEventListener('hidden.bs.modal', function () {
+    // Limpia los datos del formulario
+    document.getElementById('agregarUsuarioForm').reset();
+});
+
+
+
+// document.getElementById('modificarUsuarioForm').addEventListener('submit', function (event) {
+//   event.preventDefault();
+
+//   // Obtener datos del formulario
+//   const formData = new FormData(this);
+
+//   // Obtener el ID del usuario
+//   const userId = formData.get('id');
+
+//   // Enviar solicitud PUT al servidor
+//   fetch(`http://127.0.0.1:5000/usuarios/${userId}`, {
+//       method: 'PUT',
+//       headers: {
+//           'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(Object.fromEntries(formData)),
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//       // Manejar la respuesta del servidor
+//       console.log(data);
+//       // Cerrar el modal después de modificar el usuario
+//       $('#modificarUsuarioModal').modal('hide');
+//   })
+//   .catch(error => console.error('Error:', error));
+// });
+
+
+
+document.getElementById('eliminarUsuario').addEventListener('click', function (event) {
+  // Evitar que el enlace actúe como un formulario y cause un envío
+  event.preventDefault();
+
+  // Obtener el ID del usuario
+  const userId = userDelId;
+
+  // Enviar solicitud DELETE al servidor
+  fetch(`http://127.0.0.1:5000/usuarios/${userId}`, {
+      method: 'DELETE',
+  })
+  .then(response => response.json())
+  .then(data => {
+      // Mostrar el mensaje de confirmación
+      const mensajeConfirmacionDel = document.getElementById('mensajeConfirmacionDel');
+      mensajeConfirmacionDel.innerHTML = '¡Usuario eliminado con éxito!';
+      mensajeConfirmacionDel.style.display = 'block';
+
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+  })
+  .catch(error => console.error('Error:', error));
+});
+
+

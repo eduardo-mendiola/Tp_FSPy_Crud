@@ -25,7 +25,9 @@
   <!-- Bootstrap -->
 </head>
 <body>
-    {% include "menu_template.html" %}
+  {% if include_menu is not defined or include_menu %}
+      {% include "menu_template.html" %}
+  {% endif %}
 
     <div id="content">
         {% block main_content %}{% endblock %}

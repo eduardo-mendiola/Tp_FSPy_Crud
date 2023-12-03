@@ -77,6 +77,10 @@ def stores():
 def trabajo():
     return render_template('trabajo.html')
 
+@app.route('/user_page')
+def userPage():
+    return render_template('userPage.html')
+
 #--------------------------------------------------------------------
 # Render app biciTienda
 #--------------------------------------------------------------------

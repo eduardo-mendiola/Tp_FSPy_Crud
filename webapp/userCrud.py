@@ -124,18 +124,3 @@ class Usuario:
             print(f"Error en eliminar_usuario: {str(e)}")
             return False
 
-    #----------------------------------------------------------------
-    # def mostrar_usuario(self, id):
-    #     # Mostramos los datos de un producto a partir de su código
-    #     usuario = self.consultar_usuario_id(id)
-    #     if usuario:
-    #         print("-" * 40)
-    #         print(f"Id.........: {usuario['id']}")
-    #         print(f"Nombre.....: {usuario['nombre']}")
-    #         print(f"Apellido...: {usuario['apellido']}")
-    #         print(f"Email......: {usuario['email']}")
-    #         print(f"Telefono...: {usuario['telefono']}")
-    #         print(f"Password...: {usuario['password']}")
-    #         print("-" * 40)
-    #     else:
-    #         print("Usuario no encontrado.")

@@ -1,3 +1,5 @@
+
+// |--------------------- Inicio Trear Datos y Crear Tabla de Usuario------------------------|
 const URL = "http://127.0.0.1:5000/";
 
 // Realizamos la solicitud GET al servidor para obtener todos los productos
@@ -37,27 +39,24 @@ fetch(URL + 'usuarios')
     console.error('Error de red o de conexión:', error);
     alert('Error de red o de conexión. Verifica tu conexión a Internet.');
   });
+// |--------------------- Fin Trear Datos y Crear Tabla de Usuario------------------------|
 
 
+
+
+// |--------------------- Inicio Cargar Datos al Modal Modificar Usuario------------------------|
 //Función para cargar datos en el modal
   function cargarDatosModal(usuario) {
+    document.getElementById('id_mod').value = usuario.id;
     document.getElementById('nombre_mod').value = usuario.nombre;
     document.getElementById('apellido_mod').value = usuario.apellido;
-    document.getElementById('contrasena_mod').value = usuario.password;
-    document.getElementById('email_mod').value = usuario.email;
+    document.getElementById('passwordModificar').value = usuario.password;
+    document.getElementById('emailModificar').value = usuario.email;
     document.getElementById('telefono_mod').value = usuario.telefono;
   }
 
-// Función para cargar datos de usuario a eliminar
-let userDelId;
-function cargarDataUser(usuario) {
-    let dataUsuario = document.getElementById('dataUser')
-    dataUsuario.innerHTML = " " + usuario.nombre + " " + usuario.apellido;
-    userDelId = usuario.id;
-    return userDelId;
-}
 
-// // Función para cargar datos en el modal
+// // Función alternativa para cargar datos en el modal
 //   function cargarDatosModal(usuario) {
 //     const modals = document.querySelectorAll('.modal-modificar');
 //     modals.forEach((modal) => {
@@ -70,9 +69,27 @@ function cargarDataUser(usuario) {
 //     });
 //   }
   
+// |--------------------- Fin Cargar Datos al Modal Modificar Usuario------------------------|
 
 
 
+
+
+// |--------------------- Inicio Cargar Datos al Modal Eliminar Usuario------------------------|
+// Función para cargar datos de usuario a eliminar
+let userDelId;
+function cargarDataUser(usuario) {
+    let dataUsuario = document.getElementById('dataUser')
+    dataUsuario.innerHTML = " " + usuario.nombre + " " + usuario.apellido;
+    userDelId = usuario.id;
+    return userDelId;
+}
+// |--------------------- Fin Cargar Datos al Modal Eliminar Usuario------------------------|
+
+
+
+
+// |------------------------- Inicio Crear Usuario---------------------------------|
 document.getElementById('agregarUsuarioForm').addEventListener('submit', function (event) {
   event.preventDefault();
 
@@ -94,7 +111,7 @@ document.getElementById('agregarUsuarioForm').addEventListener('submit', functio
     console.log(data);
 
     // Verificar si el usuario ya existe
-    if (data.mensaje === 'Usuario agregado') {
+    if (data.mensaje === 'Usuario agregado') { // Este texto es lo que puse en el metodo del app.py
       // Limpiar los campos del formulario
       document.getElementById('agregarUsuarioForm').reset();
 
@@ -107,7 +124,7 @@ document.getElementById('agregarUsuarioForm').addEventListener('submit', functio
       setTimeout(() => {
         location.reload();
       }, 1000);
-    } else if (data.mensaje === 'Usuario existente') {
+    } else if (data.mensaje === 'Usuario existente') { // Este texto es lo que puse en el metodo del app.py
       // Mostrar el mensaje de usuario existente sin recargar la página ni limpiar el formulario
       const mensajeConfirmacion = document.getElementById('mensajeConfirmacion');
       mensajeConfirmacion.innerHTML = '¡El usuario ya existe!';
@@ -126,37 +143,72 @@ myModal._element.addEventListener('hidden.bs.modal', function () {
     document.getElementById('agregarUsuarioForm').reset();
 });
 
+// |------------------------- Fin Crear Usuario---------------------------------|
 
 
-// document.getElementById('modificarUsuarioForm').addEventListener('submit', function (event) {
-//   event.preventDefault();
 
-//   // Obtener datos del formulario
-//   const formData = new FormData(this);
 
-//   // Obtener el ID del usuario
-//   const userId = formData.get('id');
+// |------------------------- Inicio Modificar Usuario---------------------------------|
+document.getElementById('modificarUsuarioForm').addEventListener('submit', function (event) {
+  event.preventDefault();
 
-//   // Enviar solicitud PUT al servidor
-//   fetch(`http://127.0.0.1:5000/usuarios/${userId}`, {
-//       method: 'PUT',
-//       headers: {
-//           'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(Object.fromEntries(formData)),
-//   })
-//   .then(response => response.json())
-//   .then(data => {
-//       // Manejar la respuesta del servidor
-//       console.log(data);
-//       // Cerrar el modal después de modificar el usuario
-//       $('#modificarUsuarioModal').modal('hide');
-//   })
-//   .catch(error => console.error('Error:', error));
+  // Obtener datos del formulario
+  const formDataUpdate = new FormData(this);
+  console.log(formDataUpdate);
+
+   // Obtener el ID del usuario
+   const userIdPUT = formDataUpdate.get('id');
+
+  // Enviar solicitud PUT al servidor
+  fetch(`http://127.0.0.1:5000/usuarios/${userIdPUT}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(Object.fromEntries(formDataUpdate)),
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Manejar la respuesta del servidor
+    console.log(data);
+
+    // Verificar si el usuario ya existe
+    if (data.mensaje === 'Datos de usuario modificados') { // Este texto es lo que puse en el metodo del app.py
+      // Limpiar los campos del formulario
+      document.getElementById('modificarUsuarioForm').reset();
+
+      // Mostrar el mensaje de confirmación
+      const mensajeConfirmacionUpdate = document.getElementById('mensajeConfirmacionUpdate');
+      mensajeConfirmacionUpdate.innerHTML = '¡Datos de Usuario Modificados con Exito!';
+      mensajeConfirmacionUpdate.style.display = 'block';
+
+      // Recargar la página después de 3 segundos (ajusta el tiempo según sea necesario)
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    } else if (data.mensaje === 'Usuario no encontrado') { // Este texto es lo que puse en el metodo del app.py
+      // Mostrar el mensaje de usuario existente sin recargar la página ni limpiar el formulario
+      const mensajeConfirmacionUpdate = document.getElementById('mensajeConfirmacionUpdate');
+      mensajeConfirmacionUpdate.innerHTML = '¡No se han Realizado Modificaciones!';
+      mensajeConfirmacionUpdate.style.display = 'block';
+    }
+  })
+  .catch(error => console.error('Error:', error));
+});
+
+// // Obter la referencia al modal
+// const myModalUpdate = new bootstrap.Modal(document.getElementById('modificarUsuario'));
+
+// // Añade un evento para que se ejecute cuando el modal se cierre
+// myModalUpdate._element.addEventListener('hidden.bs.modal', function () {
+//     // Limpiar los datos del formulario
+//     document.getElementById('modificarUsuarioForm').reset();
 // });
+// |-------------------------- Fin Modificar Usuario-----------------------------------|
 
 
 
+// |------------------------- Inicio Eliminar Usuario---------------------------------|
 document.getElementById('eliminarUsuario').addEventListener('click', function (event) {
   // Evitar que el enlace actúe como un formulario y cause un envío
   event.preventDefault();
@@ -181,5 +233,5 @@ document.getElementById('eliminarUsuario').addEventListener('click', function (e
   })
   .catch(error => console.error('Error:', error));
 });
-
+// |------------------------- Fin Eliminar Usuario---------------------------------|
 

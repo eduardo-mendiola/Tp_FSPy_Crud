@@ -5,7 +5,7 @@ function validarEmailModal(idEmail, btn, mens) {
   const emailId = document.getElementById(idEmail).value;
 
   if (!emailId.includes("@")) {
-    mensajeId.innerHTML = "El email debe contener un @";
+    mensajeId.innerHTML = "El email debe contener un @!";
     mensajeId.className = "alert alert-danger mt-2";
     continueButtonId.disabled = true;  // Mejor usar true en lugar de "disabled"
   } else {
@@ -27,11 +27,11 @@ function validarPassModal(idPass, btn, mens) {
   const regExpCantChar = new RegExp(".{8,}");
 
   if (!regExpMin.test(passId)) {
-    mensajePassId.innerHTML = "La contraseña debe tener minúsculas";
+    mensajePassId.innerHTML = "La contraseña debe tener MINÚSCULAS!";
     mensajePassId.className = "alert alert-danger mt-2";
     buttonPassId.disabled = true;  
   } else if (!regExpMay.test(passId)) {
-    mensajePassId.innerHTML = "La contraseña debe tener mayúsculas";
+    mensajePassId.innerHTML = "La contraseña debe tener MAYÚSCULAS!";
     mensajePassId.className = "alert alert-danger mt-2";
     buttonPassId.disabled = true;
   } else if (!regExpCantChar.test(passId)) {

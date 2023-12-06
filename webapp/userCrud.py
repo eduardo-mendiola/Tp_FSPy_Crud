@@ -93,7 +93,7 @@ class Usuario:
     # Alta de usuario
     #--------------------------------------------------------------------------
 
-    def alta_usuario(self, nombre, apellido, email, telefono, password, id_rol=1):
+    def alta_usuario(self, nombre, apellido, email, telefono, password, id_rol):
         try:
             # Verificamos si ya existe un usuario con el mismo correo electrónico
             self.cursor.execute(f"SELECT * FROM usuarios WHERE email = '{email}'")

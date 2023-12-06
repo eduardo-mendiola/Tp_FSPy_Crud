@@ -163,8 +163,9 @@ def alta_usuario():
         email = request.json['email']
         telefono = request.json['telefono']  
         password = request.json['password']
+        id_rol = request.json['id_rol']
     
-        if usuario.alta_usuario(nombre, apellido, email, telefono, password):
+        if usuario.alta_usuario(nombre, apellido, email, telefono, password, id_rol):
             return jsonify({"mensaje": "Usuario agregado"}), 201
         else:
             return jsonify({"mensaje": "Usuario existente"}), 400

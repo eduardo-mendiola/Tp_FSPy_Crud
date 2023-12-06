@@ -27,6 +27,7 @@ fetch(URL + 'usuarios')
          <td>${usuario.password}</td>
          <td>${usuario.email}</td>
          <td>${usuario.telefono}</td>
+         <td>${usuario.id_rol}</td>
          <td>
          <a href='#' data-bs-toggle='modal' data-bs-target='#modificarUsuario' onclick='cargarDatosModal(${JSON.stringify(usuario)})'><i class='bi bi-pencil-fill m-1'></i></a>
             <a href='#' data-bs-toggle='modal' data-bs-target='#delModal' onclick='cargarDataUser(${JSON.stringify(usuario)})'><i class='bi bi-trash-fill m-1'></i></a>
@@ -53,6 +54,7 @@ fetch(URL + 'usuarios')
     document.getElementById('passwordModificar').value = usuario.password;
     document.getElementById('emailModificar').value = usuario.email;
     document.getElementById('telefono_mod').value = usuario.telefono;
+    document.getElementById('rol_mod').value = usuario.id_rol;
   }
 
 
@@ -196,14 +198,6 @@ document.getElementById('modificarUsuarioForm').addEventListener('submit', funct
   .catch(error => console.error('Error:', error));
 });
 
-// // Obter la referencia al modal
-// const myModalUpdate = new bootstrap.Modal(document.getElementById('modificarUsuario'));
-
-// // Añade un evento para que se ejecute cuando el modal se cierre
-// myModalUpdate._element.addEventListener('hidden.bs.modal', function () {
-//     // Limpiar los datos del formulario
-//     document.getElementById('modificarUsuarioForm').reset();
-// });
 // |-------------------------- Fin Modificar Usuario-----------------------------------|
 
 

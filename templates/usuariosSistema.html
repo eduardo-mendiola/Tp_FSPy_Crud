@@ -25,6 +25,7 @@
 						<th scope="col">Password</th>
 						<th scope="col">Email</th>
 						<th scope="col">Teléfono</th>
+						<th scope="col">#ID_Rol</th>
 						<th scope="col"></th>
 					</tr>
 				</thead>
@@ -35,33 +36,10 @@
 	</div>
 </div>
 
-<!-- Inicio Eliminar Usuario -->
-<div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Eliminar Usuario</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="mb-3">
-					<div for="recipient-name" class="col-form-label">Esta a punto de eliminar al usuario: </div>
-					<div id="dataUser" class="dataUser text-danger h5"></div>
-					<div class="id nombre apellido" type="hidden" id="idUser" name="idUser"></div>
-					<div id="mensajeConfirmacionDel" class="alert alert-success mt-2" style="display: none;"></div>
-				</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button id="eliminarUsuario" type="submit" class="btn btn-primary">Eliminar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Fin eliminar usuario -->
 
 
-<!-- Modal Modificar Usuario-->
+
+<!---------- Inicio Modal Modificar Usuario----------------------------->
 <div class="modal fade" id="modificarUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 	aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -103,6 +81,11 @@
 								value="" onkeyup="validarCampos()" required>
 							<label for="tema">Teléfono</label>
 						</div>
+						<div class="form-floating mb-3">
+							<input type="text" name="id_rol" class="form-control rounded-3" id="rol_mod" placeholder="Rol"
+								value="" onkeyup="validarCampos()" required>
+							<label for="tema">Rol de usuario</label>
+						</div>
 					</div>
 					<!-- mensaje desde loginApp.js -->
 					<div id="mensajeAlertaUpdate"></div>
@@ -118,11 +101,9 @@
 		</div>
 	</div>
 </div>
+<!---------Fin Modal Modificar Usuario---------------------------------------->
 
-<!-- Modal Modificar Usuario-->
-
-
-<!-- Modal Agregar Usuario-->
+<!----------Inicio Modal Agregar Usuario-------------------------------------->
 <div class="modal fade" id="agregarUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 	aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -180,7 +161,31 @@
 		</div>
 	</div>
 </div>
-<!-- -------------------------------------------------------------------------------------------- -->
+<!----------Fin Modal Agregar Usuario-------------------------------------->
 
+<!---------- Inicio Eliminar Usuario -------------------------------------->
+<div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="mb-3">
+					<div for="recipient-name" class="col-form-label">Esta a punto de eliminar al usuario: </div>
+					<div id="dataUser" class="dataUser text-danger h5"></div>
+					<div class="id nombre apellido" type="hidden" id="idUser" name="idUser"></div>
+					<div id="mensajeConfirmacionDel" class="alert alert-success mt-2" style="display: none;"></div>
+				</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button id="eliminarUsuario" type="submit" class="btn btn-primary">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!------------ Fin eliminar usuario ----------------------------------------->
 
 {% endblock %}

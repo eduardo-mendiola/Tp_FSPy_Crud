@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session, redirect
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import os
@@ -9,6 +9,9 @@ from webapp.userCrud import Usuario
 app = Flask(__name__)
 
 CORS(app)  # Esto habilitará CORS para todas las rutas
+
+# Configuración de la clave secreta para las sesiones
+app.secret_key = 'apolito'
 
 #--------------------------------------------------------------------
 # Render Frontend biciTienda
@@ -81,22 +84,27 @@ def trabajo():
 def userPage():
     return render_template('userPage.html')
 
+
 #--------------------------------------------------------------------
 # Render app biciTienda
 #--------------------------------------------------------------------
 
 
-@app.route('/inicioApp')
-def inicioApp():
-    return render_template('inicioApp.html')
+# @app.route('/inicio_app')
+# def inicioApp():
+#     return render_template('inicioApp.html')
 
-@app.route('/usuariosObj')
-def usuariosObj():
-    return render_template('usuariosObj.html')
+# @app.route('/usuarios_sistema')
+# def usuariosSistema():
+#     return render_template('usuariosSistema.html')
 
-@app.route('/loginObjSist')
-def loginObjSist():
-    return render_template('loginObjSist.html')
+@app.route('/login_sistema')
+def loginSistema():
+    return render_template('loginSistema.html')
+
+@app.route('/login_administracion')
+def loginAdministracion():
+    return render_template('loginAdministracion.html')
 
 
 
@@ -175,8 +183,9 @@ def modificar_usuario(id):
         nuevo_email = request.json['email']
         nuevo_telefono = request.json['telefono']
         nuevo_password = request.json['password']
+        nuevo_id_rol = request.json['id_rol']
         
-        if usuario.modificar_usuario(id, nuevo_nombre, nuevo_apellido, nuevo_email, nuevo_telefono, nuevo_password):
+        if usuario.modificar_usuario(id, nuevo_nombre, nuevo_apellido, nuevo_email, nuevo_telefono, nuevo_password, nuevo_id_rol):
             return jsonify({"mensaje": "Datos de usuario modificados"}), 200
         else:
             return jsonify({"mensaje": "Usuario no encontrado"}), 403
@@ -203,6 +212,101 @@ def eliminar_usuario(id):
         return jsonify({"mensaje": "Error al procesar la solicitud"}), 500
     
 #--------------------------------------------------------------------
+
+
+# @app.route('/prueba_login')
+# def pruebaLogin():
+#     return render_template('PRUEBA_LOGIN_BORRAR.html')
+#--------------------------------------------------------------------
+# Login
+#--------------------------------------------------------------------
+# Configuración de la base de datos (puedes mantener esta configuración para referencia)
+# db_config = {
+#     'host': 'localhost',
+#     'user': 'root',
+#     'password': '',
+#     'database': 'login'
+# }
+
+# Crea una instancia de la clase Usuario con la conexión a la base de datos
+# usuario_db = Usuario(**db_config)
+
+# @app.route('/login', methods=["GET", "POST"])
+# def accesoLogin():
+#     if request.method == 'POST' and 'textUser' in request.form and 'textPassword' in request.form:
+#         _email = request.form['textUser']
+#         _password = request.form['textPassword']
+
+#         # Utiliza la conexión a la base de datos desde la instancia de Usuario
+#         account = usuario.consultar_usuario_login(_email, _password)
+
+#         if account:
+#             session['logueado'] = True
+#             session['id'] = account['id']
+#             session['id_rol'] = account['id_rol']
+
+#             if session['id_rol'] == 1:
+#                 user_info = usuario.consultar_usuario_email(_email)
+#                 return render_template("inicioApp.html", user_info=user_info)        
+#             elif session['id_rol'] == 2:
+#                 return render_template("inicioApp.html")
+#             elif session['id_rol'] == 3:
+#                 user_info = usuario.consultar_usuario_email(_email)
+#                 return render_template("userPage.html", user_info=user_info)
+#         else:
+#             return render_template('login.html', mensajeErrorLogin="Usuario o Contraseña Incorrectas")
+         
+
+#--------------------------------------------------------------------
+
+
+
+@app.route('/login', methods=["GET", "POST"])
+def accesoLogin():
+    if request.method == 'POST' and 'textUser' in request.form and 'textPassword' in request.form:
+        _email = request.form['textUser']
+        _password = request.form['textPassword']
+
+        # Utiliza la conexión a la base de datos desde la instancia de Usuario
+        account = usuario.consultar_usuario_login(_email, _password)
+
+        if account:
+            session['logueado'] = True
+            session['id'] = account['id']
+            session['id_rol'] = account['id_rol']
+
+            # Almacenamos la información del usuario en la sesión
+            user_info = usuario.consultar_usuario_email(_email)
+            session['user_info'] = user_info
+
+            if session['id_rol'] == 1: 
+                return render_template("inicioApp.html", user_info=user_info)
+            elif session['id_rol'] == 2:
+                return render_template("inicioApp.html", user_info=user_info) 
+            elif session['id_rol'] == 3:
+                return render_template("userPage.html", user_info=user_info) 
+        else:
+            return render_template('login.html', mensajeErrorLogin="Usuario o Contraseña Incorrectas")
+
+
+@app.route('/usuarios_sistema')
+def usuariosSistema():
+    user_info = session.get('user_info')
+    if not user_info:
+        return redirect('/login')  
+    return render_template('usuariosSistema.html', user_info=user_info)
+
+@app.route('/inicio_app')
+def inicioApp():
+    user_info = session.get('user_info')
+    if not user_info:
+        return redirect('/inicioApp')  
+    return render_template('inicioApp.html', user_info=user_info)
+
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

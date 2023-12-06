@@ -15,14 +15,14 @@
 
   <div class="container-login">
     <h2 class="login__title">Ingresar</h2>
-    <form action="" class="login__form">
+    <form action="{{ url_for('accesoLogin') }}" method="post" class="login__form">
       <label for="user" class="login__label">Usuario</label>
-      <input type="email" name="user" id="user" class="login__input"
+      <input type="email" name="textUser" id="user" class="login__input"
         onkeyup="validarUserEmail('user', 'continueButtonLogin', 'mensaje-login')" required>
 
-      <label for="pass" class="login__label">Contraseña</label>
+      <label for="passLogin" class="login__label">Contraseña</label>
       <div class="login-pass">
-        <input type="password" name="pass" id="passLogin" class="login__input login__input--pass pass"
+        <input type="password" name="textPassword" id="passLogin" class="login__input login__input--pass pass"
           onkeyup="validarPass('passLogin', 'continueButtonLogin', 'mensaje-login')" required>
         <span class="input-group-text" id="basic-addon1">
           <a href="#">
@@ -39,9 +39,12 @@
 
       <!-- mensaje desde js alert -->
       <div id="mensaje-login"></div>
+      <!-- Usuario o contraseña incorrecta -->
+      <div id="mensajeErrorLogin"></div>
       <!-- se cambio a type button para que no envie el form -->
-      <button disabled type="button" class="btn-disabled" id="continueButtonLogin"
-        onclick="errorPage()">Continuar</button>
+      <button disabled type="submit" class="btn-disabled" id="continueButtonLogin">
+        Continuar
+      </button>
       <a href="{{url_for('message')}}" class="forgot">Olvidaste tu contraseña?</a>
     </form>
 

@@ -2,7 +2,7 @@
 // |--------------------- Inicio Trear Datos y Crear Tabla de Usuario------------------------|
 const URL = "http://127.0.0.1:5000/";
 
-// Realizamos la solicitud GET al servidor para obtener todos los productos
+// Realizamos la solicitud GET al servidor para obtener todos los usuarios
 fetch(URL + 'usuarios')
   .then(function (response) {
     if (response.ok) {
@@ -19,6 +19,19 @@ fetch(URL + 'usuarios')
 
     // Iteramos sobre los usuarios y agregamos filas a la tabla
     for (let usuario of data.usuarios) {
+      // Cambia el valor numerico por un string
+      let rolUser;
+      if (usuario.id_rol == 1) {
+        rolUser = "Administrador";
+      } else if (usuario.id_rol == 2) {
+        rolUser = "Vendedor";
+      } else if (usuario.id_rol == 3) {
+        rolUser = "Usuario";
+      } else {
+        rolUser = "Rol no valido";
+      }
+
+      // Crea la tabla con los datos de los usuarios
       let fila = document.createElement('tr');
       fila.innerHTML =
         `<td>${usuario.id}</td>
@@ -27,7 +40,7 @@ fetch(URL + 'usuarios')
          <td>${usuario.password}</td>
          <td>${usuario.email}</td>
          <td>${usuario.telefono}</td>
-         <td>${usuario.id_rol}</td>
+         <td>${rolUser}</td>
          <td>
          <a href='#' data-bs-toggle='modal' data-bs-target='#modificarUsuario' onclick='cargarDatosModal(${JSON.stringify(usuario)})'><i class='bi bi-pencil-fill m-1'></i></a>
             <a href='#' data-bs-toggle='modal' data-bs-target='#delModal' onclick='cargarDataUser(${JSON.stringify(usuario)})'><i class='bi bi-trash-fill m-1'></i></a>
@@ -46,6 +59,7 @@ fetch(URL + 'usuarios')
 
 
 // |--------------------- Inicio Cargar Datos al Modal Modificar Usuario------------------------|
+
 //Función para cargar datos en el modal
   function cargarDatosModal(usuario) {
     document.getElementById('id_mod').value = usuario.id;
@@ -228,4 +242,89 @@ document.getElementById('eliminarUsuario').addEventListener('click', function (e
   .catch(error => console.error('Error:', error));
 });
 // |------------------------- Fin Eliminar Usuario---------------------------------|
+
+
+
+
+
+// |------------------------- Inicio Busqueda Usuarios por entrada---------------------------------|
+function buscarUsuarios() {
+  // Obtiene el texto ingresado en el campo de búsqueda
+  let searchTerm = document.getElementById("searchTerm").value.toLowerCase();
+
+  // Obtiene todos los elementos de usuarios
+  let filasUsuarios = document.querySelectorAll("#tablaUsuarios tr");
+
+  filasUsuarios.forEach(function (fila) {
+    // Ignorar la primera fila (encabezados)
+    if (!fila.classList.contains("table-dark")) {
+      let columnas = fila.querySelectorAll("td");
+
+      let alMenosUnoVisible = false;
+
+      columnas.forEach(function (columna) {
+        let textoColumna = columna.textContent.toLowerCase();
+
+        if (textoColumna.includes(searchTerm)) {
+          fila.style.display = "table-row"; // Muestra la fila
+          alMenosUnoVisible = true;
+        } else {
+          fila.style.display = "none"; // Oculta la fila
+        }
+      });
+
+      // Muestra la fila si al menos una columna coincide
+      if (alMenosUnoVisible) {
+        fila.style.display = "table-row";
+      } else {
+        fila.style.display = "none";
+      }
+    }
+  });
+}
+
+// Agrega un event listener al input de búsqueda
+document.getElementById("searchTerm").addEventListener("input", function () {
+  buscarUsuarios();
+});
+// |------------------------- Fin Busqueda Usuarios por entrada---------------------------------|
+
+
+
+// |------------------------- Inicio filtro por roles ---------------------------------|
+document.getElementById('selectRol').addEventListener('change', function () {
+  filterTableByRol(this.value);
+});
+
+function filterTableByRol(selectedRol) {
+  // Obtén todas las filas de la tabla
+  let filasUsuarios = document.querySelectorAll('#tablaUsuarios tr');
+
+  // Itera sobre cada fila y muestra u oculta según el tipo de rol seleccionado
+  filasUsuarios.forEach(function (fila) {
+
+      // Obtén el valor del tipo de rol de la celda correspondiente
+      let tipoRol = fila.cells[6].textContent.trim().toLowerCase();
+
+      // Muestra u oculta la fila según la opción seleccionada
+      if (selectedRol === 'todos' || tipoRol === selectedRol) {
+          fila.style.display = 'table-row';
+      } else {
+          fila.style.display = 'none';
+      }
+  });
+}
+
+// Al cargar la pagina marca por defecto Todos los Roles
+document.addEventListener('DOMContentLoaded', function () {
+  // Obtén el elemento select por su ID
+  const selectRol = document.getElementById('selectRol');
+
+  // Establece la opción "Todos los Roles" como seleccionada
+  selectRol.value = 'todos';
+});
+
+// |------------------------- Fin filtro por roles ---------------------------------|
+
+
 

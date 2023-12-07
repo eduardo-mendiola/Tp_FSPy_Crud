@@ -162,7 +162,7 @@ scrollLinks.forEach((link) => {
 //   });
 // }
 
-// FIN BARRA DE BUSQUEDA opcion 2
+// FIN BARRA DE BUSQUEDA opcion 1
 
 // INICIO BARRA DE BUSQUEDA Opcion 2
 

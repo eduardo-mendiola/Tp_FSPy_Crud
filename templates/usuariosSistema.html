@@ -9,10 +9,19 @@
 	id="modalSignin">
 	<div class="container modal-content rounded-4 shadow">
 		<div class="text-center fs-3 my-4">Listado de Usuarios</div>
-		<a class="nav-link active ms-auto m-4 fs-5" href='#' data-bs-toggle='modal' data-bs-target='#agregarUsuario'>Agregar
+
+		<!-- Buscador -->
+		<nav class="navbar mb-0">
+			<div class="container-fluid">
+				<form class="d-flex" role="search">
+					<input class="form-control me-2 col-3" type="search" placeholder="Ingrese texto de busqueda" aria-label="Search" id="searchTerm">
+					<button class="btn btn-outline-success" type="button" onclick="buscarUsuarios()">Buscar</button>
+				</form>
+			</div>
+		</nav>
+
+		<a class="nav-link active ms-auto m-4 fs-5 mt-0" href='#' data-bs-toggle='modal' data-bs-target='#agregarUsuario'>Agregar
 			Usuario</a>
-
-
 
 
 		<div>
@@ -24,8 +33,17 @@
 						<th scope="col">Apellido</th>
 						<th scope="col">Password</th>
 						<th scope="col">Email</th>
-						<th scope="col">Teléfono</th>
-						<th scope="col">#ID_Rol</th>
+						<th scope="col">Teléfono</th>						
+						<th scope="col">
+							<div class="nav-item dropdown">
+									<select id="selectRol" class="form-select dropdown-toggle fw-bold text-white" aria-label="Tipo de Rol" data-bs-toggle="dropdown">
+											<option class="dropdown-toggle" value="todos" selected>Todos los Roles</option>
+											<option  class="dropdown-toggle" value="administrador">Administrador</option>
+											<option  class="dropdown-toggle" value="vendedor">Vendedor</option>
+											<option  class="dropdown-toggle" value="usuario">Usuario</option>
+									</select>
+							</div>	
+					</th>
 						<th scope="col"></th>
 					</tr>
 				</thead>
@@ -88,7 +106,7 @@
 									<option value="2">Vendedor</option>
 									<option value="3">Usuario</option>
 							</select>
-							<label for="tema">#ID_Rol</label>
+							<label for="tema">Rol</label>
 					</div>
 					</div>
 					<!-- mensaje desde loginApp.js -->
@@ -157,7 +175,7 @@
 								<option value="2">Vendedor</option>
 								<option value="3" selected>Usuario</option>
 							</select>
-							<label for="tema">#ID_Rol</label>
+							<label for="tema">Rol</label>
 						</div>
 					</div>
 					<!-- mensaje desde js alert -->

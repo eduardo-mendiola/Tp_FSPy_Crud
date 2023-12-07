@@ -124,6 +124,7 @@ def listar_usuarios():
         # Manejo de excepción
         print(f"Error en listar_usuarios: {str(e)}")
         return jsonify({"mensaje": "Error al procesar la solicitud"}), 500
+
 #--------------------------------------------------------------------
 @app.route("/usuarios/<int:id>", methods=["GET"])
 def mostrar_usuario_id(id):

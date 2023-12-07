@@ -223,3 +223,4 @@ class Usuario:
         # Manejo de excepción
             print(f"Error en consultar_usuari_id: {str(e)}")
             return False
+        

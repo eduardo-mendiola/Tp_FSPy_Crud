@@ -33,7 +33,7 @@ document.getElementById('crearUsuarioForm').addEventListener('submit', function 
        // Redireccionar a la página de login después de 3 segundos (ajusta el tiempo según sea necesario)
        setTimeout(() => {
         window.location.href = 'http://127.0.0.1:5000/login';
-      }, 2000);
+      }, 1000);
     } else if (data.mensaje === 'Usuario existente') { // Este texto es lo que puse en el metodo del app.py
       // Mostrar el mensaje de usuario existente sin recargar la página ni limpiar el formulario
       const mensajeConfirmacion = document.getElementById('mensajeConfirmacion');

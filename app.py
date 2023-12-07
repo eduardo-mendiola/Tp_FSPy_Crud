@@ -278,6 +278,29 @@ def compras():
     return render_template('compras.html', user_info=user_info)
 #----------------------------------------------------------------------------------------------------------------
 
+#--------------------------------------------------------------------
+# sing Up
+#--------------------------------------------------------------------
+@app.route("/sing_up", methods=["POST"])
+def newSingUp():
+    try:
+        nombre = request.json['nombre']
+        apellido = request.json['apellido']
+        email = request.json['email']
+        telefono = request.json['telefono']  
+        password = request.json['password']
+        id_rol = request.json['id_rol']
+    
+        if usuario.sing_up(nombre, apellido, email, telefono, password, id_rol):
+            return jsonify({"mensaje": "Usuario agregado"}), 201
+        else:
+            return jsonify({"mensaje": "Usuario existente"}), 400
+    
+    except Exception as e:
+        # Manejo de excepción
+        print(f"Error en alta_usuario: {str(e)}")
+        return jsonify({"mensaje": "Error al procesar la solicitud"}), 500
+
 
 if __name__ == "__main__":
     app.run(debug=True)

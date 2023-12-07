@@ -93,7 +93,32 @@ class Usuario:
     # Alta de usuario
     #--------------------------------------------------------------------------
 
-    def alta_usuario(self, nombre, apellido, email, telefono, password, id_rol):
+    def alta_usuario(self, nombre, apellido, email, telefono, password, id_rol=3):
+        try:
+            # Verificamos si ya existe un usuario con el mismo correo electrónico
+            self.cursor.execute(f"SELECT * FROM usuarios WHERE email = '{email}'")
+            usuario_existe = self.cursor.fetchone()
+            if usuario_existe:
+                return False
+
+            # Insertamos el nuevo usuario
+            sql = "INSERT INTO usuarios (nombre, apellido, email, telefono, password, id_rol) VALUES (%s, %s, %s, %s, %s, %s)"
+            valores = (nombre, apellido, email, telefono, password, id_rol)
+
+            self.cursor.execute(sql, valores)
+            self.conn.commit()
+            return True
+
+        except Exception as e:
+            # Manejo de excepción
+            print(f"Error en alta_usuario: {str(e)}")
+            return False
+        
+    #--------------------------------------------------------------------------
+    # Sing up
+    #--------------------------------------------------------------------------
+
+    def sing_up(self, nombre="Nombre", apellido="Apellido", email="", telefono="Telefóno", password="", id_rol=3):
         try:
             # Verificamos si ya existe un usuario con el mismo correo electrónico
             self.cursor.execute(f"SELECT * FROM usuarios WHERE email = '{email}'")

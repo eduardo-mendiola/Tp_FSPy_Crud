@@ -180,3 +180,9 @@
 .passConf {
   margin-bottom: 0;
 }
+
+.mensajeConfirmacionSingUp {
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--Alternativo2);
+}

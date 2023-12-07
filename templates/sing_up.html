@@ -7,6 +7,7 @@
 <!-- JavaScript  -->
 {% block additional_js %}
 <script src="/static/js/login.js" defer></script>
+<script src="/static/js/singUp.js" defer></script>
 {% endblock %}
 
 <!-- ----------------------------------------------------- INICIO MAIN ------------------------------------- -->
@@ -15,15 +16,20 @@
 
   <div class="container-login">
     <h2 class="login__title">Registro</h2>
-    <form action="" class="login__form">
+    <form id="crearUsuarioForm" action="" method="post" class="login__form">
+      <input type="hidden" name="nombre" value="Tu Nombre">
+      <input type="hidden" name="apellido" value="Tu Apellido">
+      <input type="hidden" name="telefono" value="Tu Telefono">
+      <input type="hidden" name="id_rol" value="3">
+
       <label for="user" class="login__label">Usuario</label>
-      <input type="email" name="userSingUp" id="user" class="login__input"
+      <input type="email" name="email" id="user" class="login__input"
         onkeyup="validarUserEmail('userSingUp', 'contButtonSingUp', 'mensajeSingUp')" required>
 
 
       <label for="passNew" class="login__label">Contraseña</label>
       <div class="login-pass">
-        <input type="password" name="passNew" class="login__input login__input--pass pass" id="passNew"
+        <input type="password"  class="login__input login__input--pass pass" id="passNew"
           onkeyup="validarPass('passNew', 'contButtonSingUp', 'mensajeSingUp')">
         <span class="input-group-text" id="basic-addon1">
           <a href="#">
@@ -34,7 +40,7 @@
 
       <label for="passConf" class="login__label">Confirme Contraseña</label>
       <div class="login-pass passConf">
-        <input type="password" name="passConf" class="login__input login__input--pass pass" id="passConf"
+        <input type="password" name="password" class="login__input login__input--pass pass" id="passConf"
           onkeyup="compararPass('passNew', 'passConf', 'mensajeSingUp', 'contButtonSingUp')">
         <span class="input-group-text" id="basic-addon1">
           <a href="#">
@@ -46,8 +52,9 @@
 
       <!-- mensaje desde js alert -->
       <div id="mensajeSingUp"></div>
+      <div id="mensajeConfirmacion" class="mensajeConfirmacionSingUp"></div>
       <!-- se cambio a type button para que no envie el form -->
-      <button disabled type="button" class="btn-disabled" id="contButtonSingUp" onclick="errorPage()">Continuar</button>
+      <button disabled  type="submit" class="btn-disabled" id="contButtonSingUp">Continuar</button>
     </form>
 
     <!-- Inicio de linea separadora -->

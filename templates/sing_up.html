@@ -17,10 +17,18 @@
   <div class="container-login">
     <h2 class="login__title">Registro</h2>
     <form id="crearUsuarioForm" action="" method="post" class="login__form">
-      <input type="hidden" name="nombre" value="Tu Nombre">
-      <input type="hidden" name="apellido" value="Tu Apellido">
+      <!-- <input type="hidden" name="nombre" value="Tu Nombre"> -->
+      <!-- <input type="hidden" name="apellido" value="Tu Apellido"> -->
       <input type="hidden" name="telefono" value="Tu Telefono">
       <input type="hidden" name="id_rol" value="3">
+
+      <label for="name" class="login__label">Nombre</label>
+      <input type="text" name="nombre" id="name" class="login__input"
+        onkeyup="validarUserEmail('userSingUp', 'contButtonSingUp', 'mensajeSingUp')" required>
+
+      <label for="lastName" class="login__label">Apellido</label>
+      <input type="text" name="apellido" id="lastName" class="login__input"
+        onkeyup="validarUserEmail('userSingUp', 'contButtonSingUp', 'mensajeSingUp')" required>
 
       <label for="user" class="login__label">Email</label>
       <input type="email" name="email" id="user" class="login__input"

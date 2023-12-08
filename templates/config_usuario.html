@@ -1,173 +1,185 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+{% set include_menu = false %}
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Codo A Codo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-</head>
 
-<body>
-    <div class="container mt-5">
-        <h1 class="text-center">EDITAR MIS DATOS PERSONALES</h1>
+{% block additional_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+{% endblock %}
+<script src="/static/js/modUser.js" defer></script>
+{% block additional_js %}
 
-        <div class="row" id="tablaUsuarios">
-           <!--aca deberían agregarse usuarios en columna
+{% endblock %}
+
+
+
+
+<!-- ----------------------------------------------------- INICIO MAIN ------------------------------------- -->
+{% block main_content %}
+<header class="header">
+
+    <a href="#outlet-mont" class="header-promo link-scroll">
+        <div class="header-promo__link" role="Alert promo">
+            <!-- Ofertas de hasta el 30% -->
+        </div>
+    </a>
+
+    <!-- Inicio pantalla grande -->
+    <div class="large-screen" id="largeScreen">
+        <div class="header-search">
+            <a class="header-search__logo-link" href="{{ url_for('index') }}">
+                <img class="header-search__logo-img" src="/static/img/logo.png" alt="logo">
+            </a>
+
+            <div>
+                <h2 align='center'>Cuenta de Usuario</h2>
+            </div>
+
+            <div class="login">
+                <a class="btn-login" href="{{ url_for('login') }}">
+                    <img class="btn-login__img" src="/static/img/icons/account_circle_FILL0_wght400_GRAD0_opsz24.svg"
+                        alt="">
+                    <span class="btn-login__text">Salir</span>
+                </a>
+            </div>
         </div>
 
-        <!-- Modal para editar usuario -->
-        <div class="modal fade" id="modificarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <nav class="nav-desktop" id="nav-desktop">
+            <ul class="menu-desktop">
+                <li class="menu-desktop__item"><a href="{{ url_for('configUsuario') }}" class="menu-desktop__link"
+                        data-target="info_personal">INFORMACION PERSONAL</a></li>
+                <li class="menu-desktop__item"><a href="{{ url_for('compras') }}" class="menu-desktop__link"
+                        data-target="mis_compras">MIS COMPRAS</a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Fin de pantalla grande -->
+
+
+
+    <!-- Inicio pantalla pequeña -->
+
+    <div class="small-screen" id="smallScreen">
+        <div class="header-search">
+            <div class="menu-toggle" id="menuToggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+
+            <a class="header-search__logo-link" href="#">
+                <img class="header-search__logo-img" src="/static/img/logo.png" alt="logo">
+            </a>
+
+
+            <div class="login">
+                <a class="btn-login" href="/tamplates/login.html">
+                    <img class="btn-login__img" src="/static/img/icons/account_circle_FILL0_wght400_GRAD0_opsz24.svg"
+                        alt="">
+                </a>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <nav class="nav-burger" id="navBurger">
+        <ul class="menu-burger">
+            <li class="menu-burger__item"><a href="#" class="menu-burger__link" data-target="bikes">INFORMACIÓN
+                    PERSONAL</a></li>
+            <li class="menu-burger__item"><a href="#" class="menu-burger__link" data-target="components">MIS COMPRAS</a>
+        </ul>
+    </nav>
+    <!-- Fin de pantalla pequeña -->
+
+
+</header>
+
+<main class="main">
+
+    <div class="container-text">
+        <!---------- Inicio Modal Modificar Usuario----------------------------->
+        <div class="mt-5 shadow-lg p-3 mb-5 bg-light rounded" id="modificarUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar Usuario</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5 mb-2" id="staticBackdropLabel">Modificar Usuario</h1>
                     </div>
                     <div class="modal-body">
-                        <!-- campos de edición -->
-                        <form id="formEditarUsuario">
-                            <input type="hidden" id="id_mod">
-                            <label for="nombre_mod">Nombre:</label>
-                            <input type="text" id="nombre_mod" class="form-control mb-2">
-                            <label for="apellido_mod">Apellido:</label>
-                            <input type="text" id="apellido_mod" class="form-control mb-2">
-                            <label for="passwordModificar">Contraseña:</label>
-                            <input type="password" id="passwordModificar" class="form-control mb-2">
-                            <label for="emailModificar">Email:</label>
-                            <input type="email" id="emailModificar" class="form-control mb-2">
-                            <label for="telefono_mod">Teléfono:</label>
-                            <input type="tel" id="telefono_mod" class="form-control mb-2">
-                            <label for="rol_mod">Rol:</label>
-                            <input type="text" id="rol_mod" class="form-control mb-2">
-                            <button type="button" class="btn btn-primary" onclick="guardarCambios()">Guardar Cambios</button>
+                        <form id="modificarUserForm" class="" data-bitwarden-watching="1" method="PUT">
+
+                            <div class="form-floating mb-3">
+                                <input id="id_modUser" type="hidden" name="id" value="{{ user_info.id }}">
+                                <input id="id_rol" type="hidden" name="id_rol" value="{{ user_info.id_rol }}">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="nombre" class="form-control rounded-3 border border-secondary border-2" id="nombre_mod"
+                                        placeholder="Nombre" onkeyup="validarCampos()" value="{{ user_info.nombre }}" required>
+                                    <label for="name">Nombre</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="apellido" class="form-control rounded-3 border border-secondary border-2" id="apellido_mod"
+                                        placeholder="Apellido" value="{{ user_info.apellido }}" onkeyup="validarCampos()" required>
+                                    <label for="lastname">Apellido</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="password" class="form-control rounded-3 border border-secondary border-2"
+                                        id="passwordModificar" placeholder="Contraseña" value="{{ user_info.password }}"
+                                        onkeyup="validarPassModal('passwordModificar', 'buttonModificar', 'mensajeAlertaUpdate')"
+                                        onkeyup="validarCampos()" required>
+                                    <label for="password">Contraseña</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input disabled type="text" name="email" class="form-control rounded-3 border border-secondary border-2" id="emailModificar"
+                                        placeholder="Email" value="{{ user_info.email }}"
+                                        onkeyup="validarEmailModal('emailModificar', 'buttonModificar', 'mensajeAlertaUpdate')"
+                                        onkeyup="validarCampos()">
+                                    <label for="tel">Email</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="telefono" class="form-control rounded-3 border border-secondary border-2" id="telefono_mod"
+                                        placeholder="Teléfono" value="{{ user_info.telefono }}" onkeyup="validarCampos()" required">
+                                    <label for="tema">Teléfono</label>
+                                </div>
+                              
+                            </div>
+                            <!-- mensaje desde loginApp.js -->
+                            <div id="mensajeAlertaUpdate"></div>
+                            <!-- Mensaje de confirmación desde listarUsuarios.js -->
+                            <div id="mensajeUpdateUser" class="alert alert-success mt-3" style="display: none;">
+                            </div>
+                            <button id="buttonModificarUser" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
+                                type="submit">Enviar
+                                Cambios</button>
+                            <small class="text-body-secondary">Al hacer clic en "Enviar Cambios", acepta los términos de
+                                uso.</small>
                         </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('userPage') }}" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</a>
                     </div>
                 </div>
             </div>
         </div>
+        <!---------Fin Modal Modificar Usuario---------------------------------------->
 
-    <script>
-        const URL = "http://127.0.0.1:5000/";
 
-        //  solicitud GET al servidor para obtener todos los usuarios
-        fetch(URL + 'usuarios')
-            .then(function (response) {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    // Manejar el error de respuesta del servidor
-                    console.error('Error al obtener usuario:', response.status);
-                    // Mostrar un mensaje de error al usuario
-                    alert('Usuario no encontrado. Intenta nuevamente.');
-                }
-            })
-            .then(function (data) {
-            let contenedorUsuarios = document.getElementById('tablaUsuarios');
 
-            // Iteramos sobre los usuarios y agregamos columnas al contenedor
-            for (let usuario of data.usuarios) {
-                let columna = document.createElement('div');
-                columna.classList.add('col-md-4', 'mb-4');
+    </div>
 
-                columna.innerHTML =
-                    `<div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Nombre: ${usuario.nombre}</h5>
-                            <p class="card-text">ID: ${usuario.id}</p>
-                            <p class="card-text">Apellido: ${usuario.apellido}</p>
-                            <p class="card-text">Password: ${usuario.password}</p>
-                            <p class="card-text">Email: ${usuario.email}</p>
-                            <p class="card-text">Teléfono: ${usuario.telefono}</p>
-                            <p class="card-text">Rol: ${usuario.id_rol}</p>
-                            <a href='#' data-bs-toggle='modal' data-bs-target='#modificarUsuario' onclick='cargarDatosModal(${JSON.stringify(usuario)})' class='btn btn-primary'><i class='bi bi-pencil-fill m-1'></i> Editar</a>
-                        </div>
-                    </div>`;
 
-                contenedorUsuarios.appendChild(columna);
-            }
-        });
-        // Función para cargar datos en el modal
-        function cargarDatosModal(usuario) {
-            document.getElementById('id_mod').value = usuario.id;
-            document.getElementById('nombre_mod').value = usuario.nombre;
-            document.getElementById('apellido_mod').value = usuario.apellido;
-            document.getElementById('passwordModificar').value = usuario.password;
-            document.getElementById('emailModificar').value = usuario.email;
-            document.getElementById('telefono_mod').value = usuario.telefono;
-            document.getElementById('rol_mod').value = usuario.id_rol;
-        }
 
-        function guardarCambios() {
-            const id = document.getElementById('id_mod').value;
-            const nuevoNombre = document.getElementById('nombre_mod').value;
-            const nuevoApellido = document.getElementById('apellido_mod').value;
-            const nuevaContraseña = document.getElementById('passwordModificar').value;
-            const nuevoMail = document.getElementById('emailModificar').value;
-            const nuevoTelefono = document.getElementById('telefono_mod').value;
-            const nuevoRol = document.getElementById('rol_mod').value;
+</main>
 
-            // Objeto con los datos a enviar al servidor
-            const datosActualizados = {
-                nombre: nuevoNombre,
-                apellido: nuevoApellido,
-                password: nuevaContraseña,
-                email: nuevoMail,
-                telefono: nuevoTelefono,
-                id_rol: nuevoRol
-            };
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
 
-            // solicitud PUT al servidor para actualizar el usuario
-            fetch(`http://127.0.0.1:5000/usuarios/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(datosActualizados)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // La solicitud se completó con éxito
-                        return response.json();
-                    } else {
-                        // Manejar el error de respuesta del servidor
-                        console.error('Error al actualizar los datos:', response.status);
-                        alert('Error al actualizar los datos. Intenta nuevamente.');
-                    }
-                })
-                .then(usuarioActualizado => {
-                    // Actualizar los datos en la columna correspondiente
-                    const columnaActualizada = document.querySelector(`#tablaUsuarios .col-md-4[data-id="${id}"]`);
-                    if (columnaActualizada) {
-                        columnaActualizada.innerHTML =
-                            `<div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Nombre: ${usuarioActualizado.nombre}</h5>
-                                    <p class="card-text">ID: ${usuarioActualizado.id}</p>
-                                    <p class="card-text">Apellido: ${usuarioActualizado.apellido}</p>
-                                    <p class="card-text">Password: ${usuarioActualizado.password}</p>
-                                    <p class="card-text">Email: ${usuarioActualizado.email}</p>
-                                    <p class="card-text">Teléfono: ${usuarioActualizado.telefono}</p>
-                                    <p class="card-text">Rol: ${usuarioActualizado.id_rol}</p>
-                                    <a href='#' data-bs-toggle='modal' data-bs-target='#modificarUsuario' onclick='cargarDatosModal(${JSON.stringify(usuarioActualizado)})' class='btn btn-primary'><i class='bi bi-pencil-fill m-1'></i> Editar</a>
-                                </div>
-                            </div>`;
-
-                        // Cerrar el modal después de la actualización
-                        const modal = new bootstrap.Modal(document.getElementById('modificarUsuario'));
-                        modal.hide();
-
-                        // Mostrar un mensaje de éxito
-                        alert('Usuario actualizado con éxito.');
-                    }
-                })
-        
-        }
-    </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofGJopL3" crossorigin="anonymous"></script>
-</body>
+{% endblock %}
+<!-- ----------------------------------------------------- FIN MAIN ------------------------------------- -->
 
 </html>
